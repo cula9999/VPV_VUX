@@ -1,0 +1,451 @@
+openapi: 3.1.0
+info:
+  title: VUX - Web Interfaces
+  description: |-
+    This is description of Outbound Web interface from VPV to VUX. With interface is possible to create and modify Insurance Objects and their postings, Claim objects, their postings and reserves. 
+
+    Some useful links:
+    - [VPV Versicherungen ](https://www.vpv.de/)
+  contact:
+    email: vladimir.culic@vpv.de
+  version: 1.0.1
+servers: 
+  - url: https://vpverpcs1s.vpv.de:44300/sap/bc/vux
+    description: "SCD"   
+  - url: https://vpverpcs2s.vpv.de:44300/sap/bc/vux
+    description: "SKI"   
+tags:
+  - name: Insurance Object
+    description: Contractual unit from the Collections/Disbursements view, which is used to specify the invoicing-related parameters.
+  - name: Claim Object
+    description: Special version of Insurance Object 
+  - name: Postings
+    description: Payments, Recalls, Reservations for Insurance Object
+paths:
+  /vux/InsObject:
+    options:
+      tags:
+        - Insurance Object
+      summary: json for POST
+      description: Returns json example structure for use in POST
+      operationId: Insurance Object OPTIONS
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/insobj_in'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbiden
+    post:
+      tags:
+        - Insurance Object
+      summary: New Insurance Object or modify existing one
+      description: New Insurance Object or modify existing one
+      operationId: Insurance Object POST
+      requestBody:
+        description: New Insurance Object or modify existing one
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/insobj_in'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/insobj_default_out'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /vux/SchObject:
+    options:
+      tags:
+        - Claim Object
+      summary: json for POST
+      description: Returns json example structure for use in POST
+      operationId: Schade Object OPTIONS
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/insobj_in'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbiden
+    post:
+      tags:
+        - Claim Object
+      summary: New Insurance Object or modify existing one
+      description: New Insurance Object or modify existing one
+      operationId: Schade Object POST
+      requestBody:
+        description: New Insurance Object or modify existing one
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/schade_in'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/insobj_default_out'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+components:
+  schemas:
+    insobj_in:
+      type: object
+      properties: 
+        insobj_in:
+          type: array
+          items: 
+            type: object
+            properties: 
+              system_put: 
+                type: string
+              system_mandant: 
+                type: string
+              system_sst_id: 
+                type: string
+              system_ref_vo: 
+                type: string
+              system_ref_ts: 
+                type: string
+              vtr_vertragsnr: 
+                type: string
+              vtr_aennr: 
+                type: integer
+              vtr_wirdat: 
+                type: string
+              vtr_vorgang: 
+                type: string
+              vtr_vorgart: 
+                type: string
+              vtr_nachtrag: 
+                type: integer
+                format: int32
+              vtr_pol_beg: 
+                type: string
+              vtr_pol_abl: 
+                type: string
+              vtr_verl_kl: 
+                type: string
+              vtr_zahlw: 
+                type: string
+              vtr_vnnr: 
+                type: string
+              vtr_paid: 
+                type: string
+              vtr_produkt: 
+                type: string
+              vtr_prodlfd: 
+                type: integer
+                format: int32
+              vtr_produkt_bez: 
+                type: string
+              vtr_vm_ink: 
+                type: string
+              vtr_fremdvtr: 
+                type: string
+              vtr_makler_id: 
+                type: string
+              vtr_steuer: 
+                type: string
+              vtr_steuerland: 
+                type: string
+              vtr_steu_abgrund: 
+                type: string
+              vtr_abvm_1: 
+                type: string
+              vtr_abvm_2: 
+                type: string
+              vtr_abvm_tlg: 
+                type: integer
+                format: int32
+              aktyp: 
+                type: string
+              insobjecttyp: 
+                type: string
+              part_akttyp: 
+                type: string
+              contract_state: 
+                type: string
+              sepa_io: 
+                type: object
+                properties: 
+                  mandt: 
+                    type: string
+                  insobjectext: 
+                    type: string
+                  mndid: 
+                    type: string
+                  bkvid: 
+                    type: string
+                  partner: 
+                    type: string
+                  change_id: 
+                    type: string
+                  sepa_change_date: 
+                    type: string
+                  sepa_change_time: 
+                    type: string
+                  processed: 
+                    type: string
+              lockcode: 
+                type: string
+    insobj_default_out: 
+        type: object
+        properties:
+          insobj_out:
+            type: object
+            properties:
+              message:
+                $ref: '#/components/schemas/message_type'
+              keyvalue: 
+                $ref: '#/components/schemas/keyvalue_type'
+    postings_default_out: 
+        type: object
+        properties:
+          postings_out:
+            type: object
+            properties:
+              message:
+                $ref: '#/components/schemas/message_type'
+              keyvalue: 
+                $ref: '#/components/schemas/keyvalue_type'
+    sch_jojo:
+      type: object
+      properties: 
+        joko:
+          type: array
+          items:
+            type: object
+            properties:
+              ono:
+                type: string
+              bono:
+                type: string
+    schade_in:
+      type: object
+      properties:
+        postings_in: 
+          type: array
+          items: 
+            type: object
+            properties: 
+              system_put: 
+                type: string
+              system_mandant: 
+                type: string
+              system_sst_id: 
+                type: string
+              system_ref_bs: 
+                type: string
+              system_ref_ts: 
+                type: string
+              sch_nr: 
+                type: string
+              sch_ast_zpid: 
+                type: string
+              sch_ast_vuxid: 
+                type: integer
+                format: int32
+              gef_lstnr: 
+                type: string
+              sch_abrart: 
+                type: string
+              sch_abrpos: 
+                type: string
+              sch_zahlweg: 
+                type: integer
+                format: int32
+              sch_iban: 
+                type: string
+              sch_bic: 
+                type: string
+              sch_vzweck: 
+                type: string
+              sch_zahlbetrag: 
+                type: number
+              vtr_vnnr: 
+                type: string
+              vtr_zp_paid: 
+                type: string
+              vtr_produkt: 
+                type: string
+              vtr_prodlfd: 
+                type: integer
+                format: int32
+              vtr_produkt_bez: 
+                type: string
+              ris_spaidx: 
+                type: string
+              ris_risikonr: 
+                type: string
+              ris_obj_ort_vp: 
+                type: string
+              ris_bez: 
+                type: string
+              ris_beg: 
+                type: string
+              ris_objtyp: 
+                type: string
+              ris_risart: 
+                type: string
+              ris_statistiknummer: 
+                type: string
+              ris_vvtr: 
+                type: string
+              ris_vspaidx: 
+                type: string
+              ris_vrisiko: 
+                type: string
+              ris_pol_bez: 
+                type: string
+              ris_tsparte: 
+                type: string
+              ris_tarbez: 
+                type: string
+              ris_tarife1: 
+                type: string
+              ris_tarife2: 
+                type: string
+              ris_tarlfd: 
+                type: string
+              ris_bed: 
+                type: string
+              ris_goed_kennz: 
+                type: string
+              ris_produktgeber: 
+                type: string
+              gef_gvip_kurz: 
+                type: string
+              gef_gvip_lang: 
+                type: string
+              gef_buchsparte: 
+                type: string
+              gef_wagnisnr: 
+                type: string
+              gef_gefahr: 
+                type: string
+              gef_grp: 
+                type: string
+              gef_pos: 
+                type: string
+              gef_grp_pos_bez: 
+                type: string
+              gef_spartencode1: 
+                type: string
+              gef_spartencode2: 
+                type: string
+              gef_spartencode3: 
+                type: string
+              gef_spartencode4: 
+                type: string
+              gef_spartencode5: 
+                type: string
+              gef_sap_sparte: 
+                type: string
+    keyvalue_type: 
+      type: array
+      items: 
+        type: object
+        properties: 
+          tabnm: 
+            type: string
+            description: Table name
+          fldnm: 
+            type: string
+            description: Field name
+          valext: 
+            type: string
+            description: External value
+          valint: 
+            type: string
+            description: Internal value
+    message_type: 
+      type: array
+      items: 
+        type: object
+        properties:
+          msgty: 
+            type: string
+            maxLength: 1
+            description: Message Type
+          arbgb: 
+            type: string
+            maxLength: 20
+            description: Message Class
+          txtnr: 
+            type: number
+            description: Message Number
+            examples: [000, 010]
+            exclusiveMaximum: 3
+            exclusiveMinimum: 3
+          msgv1: 
+            type: string
+            maxLength: 50
+            description: Message Variable
+          msgv2: 
+            type: string
+            maxLength: 50
+            description: Message Variable
+          msgv3: 
+            type: string
+            maxLength: 50
+            description: Message Variable
+          msgv4: 
+            type: string
+            maxLength: 50
+            description: Message Variable
+          text: 
+            type: string
+            maxLength: 73
+            description: "CBP: Message text"
+          tbfld: 
+            type: string
+            maxLength: 70
+            description: "Table field (table name-field name)"
+          disp_rep: 
+            type: string
+            maxLength: 1
+            description: "BP message handler: (W,I,S) Display message several"
+          cancel: 
+            type: boolean
+            description: "Data element for domain BOOLE: TRUE (='X') and FALSE (=' ')"
+          text_ext: 
+            type: string
+            maxLength: 273
+            description: "CBP: Message Text (Extended Version)"
+          stepl: 
+            type: integer
+            format: int32
+            description: Index of Current Step Loop Line
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
