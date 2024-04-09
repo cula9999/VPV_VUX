@@ -14,6 +14,8 @@ servers:
     description: "SCD"   
   - url: https://vpverpcs2s.vpv.de:44300/sap/bc/vux
     description: "SKI"   
+  - url: https://vpverpcs2d.vpv.de:44300/sap/bc/vux
+    description: "E95"
 tags:
   - name: Insurance Object
     description: Contractual unit from the Collections/Disbursements view, which is used to specify the invoicing-related parameters.
